@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:bluetoothapp="clr-namespace:BluetoothApp" 
+             xmlns:models="clr-namespace:BluetoothApp.Models" 
+             xmlns:contracts="clr-namespace:Plugin.BLE.Abstractions.Contracts;assembly=Plugin.BLE.Abstractions"
+             x:Class="BluetoothApp.MainPage"
+             x:DataType="bluetoothapp:BluetoothDevicesViewModel"
+             x:Name="devicePage">
+    <ContentPage.BindingContext>
+        <bluetoothapp:BluetoothDevicesViewModel/>
+    </ContentPage.BindingContext>
+    <StackLayout>
+        <ListView ItemsSource="{Binding Devices}" >
+            <ListView.ItemTemplate>
+                <DataTemplate  x:DataType="contracts:IDevice">
+                    <TextCell Text="{Binding Name}" 
+                              Command="{Binding Path=BindingContext.DeviceClick, 
+                                        Source={x:Reference Name=devicePage} }"
+                              CommandParameter="{Binding .}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button Text="Start" Command="{Binding RefreshDevices}"/>
+    </StackLayout>
+
+</ContentPage>
